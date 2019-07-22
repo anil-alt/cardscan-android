@@ -21,6 +21,12 @@ android {
         }
     }
 
+    aaptOptions {
+        noCompress "tflite"
+        noCompress "lite"
+    }
+
+
 }
 
 dependencies {

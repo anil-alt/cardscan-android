@@ -16,6 +16,8 @@ limitations under the License.
 package com.getbouncer.cardscan.base;
 
 import android.content.Context;
+import android.os.SystemClock;
+import android.util.Log;
 import android.view.Display;
 
 import java.io.IOException;
@@ -23,6 +25,7 @@ import java.nio.MappedByteBuffer;
 
 /** This classifier works with the float MobileNet model. */
 class FindFourModel extends ImageClassifier {
+    private static final String TAG = "FindFourModel";
 
     final int rows = 34;
     final int cols = 51;
@@ -31,7 +34,7 @@ class FindFourModel extends ImageClassifier {
     private final int classes = 3;
     private final int digitClass = 1;
     private final int expiryClass = 2;
-
+    private long findFourProcessingTime;
     /**
      * An array to hold inference results, to be feed into Tensorflow Lite as outputs. This isn't part
      * of the super class, because we need a primitive array here.
@@ -92,6 +95,9 @@ class FindFourModel extends ImageClassifier {
 
     @Override
     protected void runInference() {
+        final long startTime = SystemClock.uptimeMillis();
         tflite.run(imgData, labelProbArray);
+        findFourProcessingTime = SystemClock.uptimeMillis() - startTime;
+        Log.d(TAG, "Final Four Inf in ms: " +findFourProcessingTime);
     }
 }
