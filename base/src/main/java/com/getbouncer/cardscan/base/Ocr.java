@@ -125,21 +125,23 @@ public class Ocr {
                 createdModels = true;
             }
 
-            try {
-                findFour.useGpu();
-                recognizedDigitsModel.useGpu();
-            } catch (Error | Exception e) {
-                Log.i("Ocr", "useGpu exception, falling back to CPU", e);
-                findFour.useCPU();
-                recognizedDigitsModel.useCPU();
+            if (createdModels) {
+                try {
+                    findFour.useGpu();
+                    recognizedDigitsModel.useGpu();
+                } catch (Error | Exception e) {
+                    Log.i("Ocr", "useGpu exception, falling back to CPU", e);
+                    findFour = new FindFourModel(context);
+                    recognizedDigitsModel = new RecognizedDigitsModel(context);
+                }
             }
 
             try {
                 return runModel(image);
             } catch (Error | Exception e) {
                 Log.i("Ocr", "runModel exception, retry prediction", e);
-                findFour.useCPU();
-                recognizedDigitsModel.useCPU();
+                findFour = new FindFourModel(context);
+                recognizedDigitsModel = new RecognizedDigitsModel(context);
                 return runModel(image);
             }
         } catch (Error | Exception e) {
