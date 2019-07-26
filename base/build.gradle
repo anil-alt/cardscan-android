@@ -35,8 +35,8 @@ dependencies {
     implementation 'org.tensorflow:tensorflow-lite-gpu:0.0.0-nightly'
 }
 
-apply plugin: 'com.github.dcendents.android-maven'
-apply plugin: 'com.jfrog.bintray'
+//apply plugin: 'com.github.dcendents.android-maven'
+//apply plugin: 'com.jfrog.bintray'
 
 ext {
     bintrayRepo = 'CardScanBase'
@@ -66,6 +66,7 @@ ext {
 group = publishedGroupId
 version = libraryVersion
 
+/*
 install {
     repositories.mavenInstaller {
         pom.project {
@@ -143,3 +144,4 @@ bintray {
         }
     }
 }
+*/

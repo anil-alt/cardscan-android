@@ -114,25 +114,32 @@ public class Ocr {
 
     public synchronized String predict(Bitmap image, Context context) {
         try {
+            boolean createdModels = false;
             if (findFour == null) {
                 findFour = new FindFourModel(context);
-                try {
-                    findFour.useGpu();
-                } catch (Error | Exception e) {
-                    Log.i("Ocr", "useGpu exception, falling back to CPU", e);
-                    findFour = new FindFourModel(context);
-                }
+                createdModels = true;
             }
 
             if (recognizedDigitsModel == null) {
                 recognizedDigitsModel = new RecognizedDigitsModel(context);
+                createdModels = true;
+            }
+
+            try {
+                findFour.useGpu();
+                recognizedDigitsModel.useGpu();
+            } catch (Error | Exception e) {
+                Log.i("Ocr", "useGpu exception, falling back to CPU", e);
+                findFour.useCPU();
+                recognizedDigitsModel.useCPU();
             }
 
             try {
                 return runModel(image);
             } catch (Error | Exception e) {
                 Log.i("Ocr", "runModel exception, retry prediction", e);
-                findFour = new FindFourModel(context);
+                findFour.useCPU();
+                recognizedDigitsModel.useCPU();
                 return runModel(image);
             }
         } catch (Error | Exception e) {
