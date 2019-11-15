@@ -6,6 +6,8 @@
     <string name="scan_card_alt_text">Scan Card (Alt Text)</string>
     <string name="step_up">Step Up</string>
     <string name="scan_video_testing">Scan Video (testing)</string>
+    <string name="card_scan_scan_card">Hold your camera steady</string>
+    <string name="card_scan_position_card"> </string>
 
     <!-- Use these resource IDs to customize the strings in the Card Scan activity -->
     <!--
