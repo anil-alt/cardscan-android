@@ -67,7 +67,7 @@ public class CreditCardUtils {
 
     private static String prefix(String s, int n) {
         String result = "";
-        while (result.length() < n) {
+        while (result.length() < n && n < s.length()) {
             result += s.charAt(result.length());
         }
 
@@ -75,39 +75,43 @@ public class CreditCardUtils {
     }
 
     public static boolean isAmex(String number) {
+        if (number.length() != 15) {
+            return false;
+        }
+
         int prefix = Integer.parseInt(prefix(number,2));
 
-        return number.length() == 15 && (prefix == 34 || prefix == 37);
+        return prefix == 34 || prefix == 37;
     }
 
     public static boolean isUnionPay(String number) {
-        int prefix2 = Integer.parseInt(prefix(number,2));
-
         if (number.length() != 16) {
             return false;
         }
+
+        int prefix2 = Integer.parseInt(prefix(number,2));
 
         return prefix2 == 62;
     }
 
     public static boolean isDiscover(String number) {
-        int prefix2 = Integer.parseInt(prefix(number,2));
-        int prefix4 = Integer.parseInt(prefix(number, 4));
-
         if (number.length() != 16) {
             return false;
         }
+
+        int prefix2 = Integer.parseInt(prefix(number,2));
+        int prefix4 = Integer.parseInt(prefix(number, 4));
 
         return prefix2 == 64 || prefix2 == 65 || prefix4 == 6011;
     }
 
     public static boolean isMastercard(String number) {
-        int prefix2 = Integer.parseInt(prefix(number, 2));
-        int prefix4 = Integer.parseInt(prefix(number, 4));
-
         if (number.length() != 16) {
             return false;
         }
+
+        int prefix2 = Integer.parseInt(prefix(number, 2));
+        int prefix4 = Integer.parseInt(prefix(number, 4));
 
         return (prefix2 >= 51 && prefix2 <= 55) || (prefix4 >= 2221 && prefix4 <= 2720);
     }

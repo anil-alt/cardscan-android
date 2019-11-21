@@ -19,7 +19,9 @@ import android.util.Log;
 import com.getbouncer.cardscan.base.ssd.DetectedSSDBox;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 
 class MachineLearningThread implements Runnable {
@@ -340,12 +342,12 @@ class MachineLearningThread implements Runnable {
 
     private void runOcrModel(final Bitmap bitmap, final RunArguments args,
                              final Bitmap bitmapForObjectDetection, final Bitmap fullScreenBitmap) {
-        final Ocr ocr = new Ocr();
-        final String number = ocr.predict(bitmap, args.mContext);
+        //final Ocr ocr = new Ocr();
+        //final String number = ocr.predict(bitmap, args.mContext);
         final SSDOcrDetect ocrDetect = new SSDOcrDetect();
-        final String ssd_number = ocrDetect.predict(bitmap, args.mContext);
-        Log.e("OCR Detect", "OCR Number:" + ssd_number);
-        final boolean hadUnrecoverableException = ocr.hadUnrecoverableException;
+        final String number = ocrDetect.predict(bitmap, args.mContext);
+        Log.e("OCR Detect", "OCR Number:" + number);
+        final boolean hadUnrecoverableException = ocrDetect.hadUnrecoverableException;
         Handler handler = new Handler(Looper.getMainLooper());
         handler.post(new Runnable() {
             public void run() {
@@ -354,8 +356,8 @@ class MachineLearningThread implements Runnable {
                         if (hadUnrecoverableException) {
                             args.mScanListener.onFatalError();
                         } else {
-                            args.mScanListener.onPrediction(number, ocr.expiry, bitmap, ocr.digitBoxes,
-                                    ocr.expiryBox, bitmapForObjectDetection, fullScreenBitmap);
+                            args.mScanListener.onPrediction(number, null, bitmap, new ArrayList<DetectedBox>(),
+                                    null, bitmapForObjectDetection, fullScreenBitmap);
                         }
                     }
                     bitmap.recycle();
@@ -392,7 +394,7 @@ class MachineLearningThread implements Runnable {
 
         if (args.mIsOcr) {
             float width = bm.getWidth();
-            float height = width * 302.0f / 480.0f;
+            float height = width * 375.0f / 600.0f;
             float y = (bm.getHeight() - height) / 2.0f;
             float x = 0.0f;
             Bitmap croppedBitmap = Bitmap.createBitmap(bm, (int) x, (int) y, (int) width,
