@@ -39,9 +39,9 @@ class SSDOcrModel extends ImageClassifier {
 
     /** the model takes a 300x300 sample images as input */
 
-    private static final int CROP_SIZE_HEIGHT = 375;
+    private static final int CROP_SIZE_HEIGHT = 405;
 
-    private static final int CROP_SIZE_WIDTH = 600;
+    private static final int CROP_SIZE_WIDTH = 650;
     /** To be  used later */
     private static final int NUM_THREADS = 4;
     private boolean isModelQuantized; // TODO later
@@ -50,7 +50,7 @@ class SSDOcrModel extends ImageClassifier {
      * and for each feature map activation we have 6 priors, so total priors are
      * 19x19x6 + 10x10x6 = 2766
      */
-    static final int NUM_OF_PRIORS = 3420;
+    static final int NUM_OF_PRIORS = 4017;
 
     /** For each activation in our feature map, we have predictions for 6 bounding boxes
      *   of different aspect ratios
@@ -71,16 +71,13 @@ class SSDOcrModel extends ImageClassifier {
     static final int NUM_CLASS = NUM_OF_CLASSES * NUM_OF_PRIORS;
 
     static final float PROB_THRESHOLD = 0.50f;
-    static final float IOU_THRESHOLD = 0.50f;
+    static final float IOU_THRESHOLD = 0.40f;
     static final float CENTER_VARIANCE = 0.1f;
     static final float SIZE_VARIANCE = 0.2f;
     static final int CANDIDATE_SIZE = 50;
     static final int TOP_K = 20;
     static final Hashtable<String, Integer> featureMapSizes = new Hashtable<String, Integer>();
 
-
-
-    //static final int[] featureMapSizes = {32, 16};
 
     // Config values.
     private int inputSize;
@@ -117,10 +114,10 @@ class SSDOcrModel extends ImageClassifier {
      */
     public SSDOcrModel(Context context) throws IOException {
         super(context);
-        featureMapSizes.put("layerOneWidth", 38);
-        featureMapSizes.put("layerOneHeight", 24);
-        featureMapSizes.put("layerTwoWidth", 19);
-        featureMapSizes.put("layerTwoHeight", 12);
+        featureMapSizes.put("layerOneWidth", 41);
+        featureMapSizes.put("layerOneHeight", 26);
+        featureMapSizes.put("layerTwoWidth", 21);
+        featureMapSizes.put("layerTwoHeight", 13);
 
         /** The model reshapes all the data to 1 x [All Data Points]
          */
