@@ -8,8 +8,8 @@ public class OcrPriorsGen{
                                       int noOfPriors){
         float[][] boxes = new float[featureMapSize_height*featureMapSize_width*noOfPriors][4];
         float x_center, y_center;
-        int image_height = 375;
-        int image_width = 600;
+        int image_height = 430;
+        int image_width = 700;
         float size;
         float scale_height = image_height / shrinkage_height;
         float scale_width = image_width / shrinkage_width;
@@ -66,8 +66,8 @@ public class OcrPriorsGen{
 
         float[][] priorsOne, priorsTwo, priorsCombined;
 
-        priorsOne = OcrPriorsGen.genPriors(24, 38, 16, 16, 14, 30, 3, 3);
-        priorsTwo = OcrPriorsGen.genPriors(12, 19, 31, 31, 30, 45, 3, 3);
+        priorsOne = OcrPriorsGen.genPriors(27, 44, 16, 16, 15, 30, 3, 3);
+        priorsTwo = OcrPriorsGen.genPriors(14, 22, 31, 31, 30, 45, 3, 3);
 
         priorsCombined = new float[priorsOne.length + priorsTwo.length][4];
 
