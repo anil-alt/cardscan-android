@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.getbouncer.cardscan.base.ssd.ArrUtils;
 import com.getbouncer.cardscan.base.ssd.DetectedOcrBox;
+import com.getbouncer.cardscan.base.ssd.DynamicComparator;
 import com.getbouncer.cardscan.base.ssd.OcrPriorsGen;
 import com.getbouncer.cardscan.base.ssd.PredictionAPI;
 import com.getbouncer.cardscan.base.ssd.Result;
@@ -28,12 +29,19 @@ public class SSDOcrDetect {
     /** to store the YMax values of all the boxes */
     private List<Float> yMaxArray = new ArrayList<Float>();
 
+    /** to store width  of all boxes */
+    private List<Float> widthArray = new ArrayList<Float>();
+
+    /** to store the height of all the boxes */
+    private List<Float> heightArray = new ArrayList<Float>();
 
     public List<DetectedOcrBox> objectBoxes = new ArrayList<>();
     boolean hadUnrecoverableException = false;
 
     /** We don't use the following two for now */
     public static boolean USE_GPU = false;
+
+    public DynamicComparator dyComp = null;
 
     static boolean isInit() {
         return ssdOcrModel != null;
@@ -66,44 +74,70 @@ public class SSDOcrDetect {
 
                 objectBoxes.add(ocrBox);
 
+
                 /** add the YMin value of the current box */
                 yMinArray.add(result.pickedBoxes.get(i)[1]*image.getHeight());
                 /** add the YMax value of the current box */
                 yMaxArray.add(result.pickedBoxes.get(i)[3]*image.getHeight());
+
+                /** add the width of the current box */
+                widthArray.add(Math.abs(result.pickedBoxes.get(i)[0]*image.getWidth() -
+                                            result.pickedBoxes.get(i)[2]*image.getWidth()));
+                /** add the height of the current box */
+                heightArray.add(Math.abs(result.pickedBoxes.get(i)[1]*image.getHeight() -
+                                            result.pickedBoxes.get(i)[3]*image.getHeight()));
             }
         }
         String numberOCR = "";
-        Collections.sort(objectBoxes);
-        Collections.sort(yMinArray);
-        Collections.sort(yMaxArray);
+        //Collections.sort(objectBoxes);
+        //Collections.sort(yMinArray);
+        //Collections.sort(yMaxArray);
+        Collections.sort(widthArray);
+        Collections.sort(heightArray);
+
         float medianYMin = 0;
         float medianYMax = 0;
         float medianHeight = 0;
         float medianYCenter = 0;
+        float medianWidth = 0;
 
-        if (!yMaxArray.isEmpty() && !yMinArray.isEmpty()) {
+        /*if (!yMaxArray.isEmpty() && !yMinArray.isEmpty()) {
             medianYMin = yMinArray.get(yMinArray.size() / 2);
             medianYMax = yMaxArray.get(yMaxArray.size() / 2);
             medianHeight = Math.abs(medianYMax - medianYMin);
             medianYCenter = (medianYMax + medianYMin) / 2;
         }
 
+         */
+
+        if (!widthArray.isEmpty() && !heightArray.isEmpty()) {
+            medianHeight = heightArray.get(heightArray.size() / 2);
+            medianWidth = widthArray.get(widthArray.size() / 2);
+        }
+
+        dyComp = new DynamicComparator(medianHeight, medianWidth);
+        Collections.sort(objectBoxes, dyComp);
+
+
+
+
+
         StringBuilder num = new StringBuilder();
         for (DetectedOcrBox box : objectBoxes){
             if (box.label == 10){
                 box.label = 0;
             }
-            float boxYCenter = (box.YMax +  box.YMin) / 2;
+            //float boxYCenter = (box.YMax +  box.YMin) / 2;
 
-            if (Math.abs(boxYCenter - medianYCenter) > medianHeight)
-            {
-                Log.e("Don't add this box",
-                        String.valueOf(box.YMin) + String.valueOf(box.YMax));
-            }
-            else
-            {
+            //if (Math.abs(boxYCenter - medianYCenter) > medianHeight)
+            //{
+            //    Log.e("Don't add this box",
+            //            String.valueOf(box.YMin) + String.valueOf(box.YMax));
+            //}
+            //else
+            //{
                 num.append(String.valueOf(box.label));
-            }
+            //}
 
 
         }
