@@ -12,9 +12,18 @@ public class DynamicComparator implements Comparator<DetectedOcrBox> {
     }
 
     public int compare(DetectedOcrBox boxOne, DetectedOcrBox boxTwo){
-        if (boxOne.YMin + 0.7 * this.medianHeight < boxTwo.YMin || boxOne.XMin + 0.7 * this.medianWidth  < boxTwo.XMin){
+        if (boxOne.YMin + 0.8 * this.medianHeight < boxTwo.YMin){
             return -1;
         }
-        else return 1;
+        else if (boxOne.XMin < boxTwo.XMin){
+            return -1;
+        }
+        else if (boxOne.YMin > 0.8 * this.medianHeight + boxTwo.YMin) {
+            return 1;
+        }
+        else if (boxOne.XMin > boxTwo.XMin){
+            return 1;
+        }
+        else return 0;
     }
 }
