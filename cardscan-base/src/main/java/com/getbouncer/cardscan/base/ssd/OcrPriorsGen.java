@@ -66,7 +66,7 @@ public class OcrPriorsGen{
 
         float[][] priorsOne, priorsTwo, priorsCombined;
 
-        priorsOne = OcrPriorsGen.genPriors(24, 38, 16, 16, 14, 30, 3, 3);
+        priorsOne = OcrPriorsGen.genPriors(47, 75, 8, 8, 7, 15, 3, 3);
         priorsTwo = OcrPriorsGen.genPriors(12, 19, 31, 31, 30, 45, 3, 3);
 
         priorsCombined = new float[priorsOne.length + priorsTwo.length][4];
