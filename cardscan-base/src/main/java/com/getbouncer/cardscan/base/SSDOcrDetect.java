@@ -103,7 +103,7 @@ public class SSDOcrDetect {
     public interface OnDetectListener {
         void complete(String result);
     }
-
+/*
     private static <T> T getKeyByMaxValue(Map<T, ? extends Comparable> map) {
         Map.Entry<T, ? extends Comparable> maxEntry = null;
         for (Map.Entry<T, ? extends Comparable> entry : map.entrySet()) {
@@ -118,7 +118,7 @@ public class SSDOcrDetect {
             return null;
         }
     }
-
+*/
     public static void runInCompletionLoop(
         final List<Bitmap> frames,
         final Context context,
@@ -149,7 +149,7 @@ public class SSDOcrDetect {
                     @Override
                     public void run() {
                         if (detection != null) {
-                            detection.complete(getKeyByMaxValue(results));
+                            //detection.complete(getKeyByMaxValue(results));
                         }
                     }
                 });
