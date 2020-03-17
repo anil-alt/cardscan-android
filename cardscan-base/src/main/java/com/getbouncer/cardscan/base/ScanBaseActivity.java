@@ -13,9 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.getbouncer.cardscan.base;
-
 
 import android.Manifest;
 import android.app.Activity;
@@ -33,9 +31,6 @@ import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.SystemClock;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.VisibleForTesting;
 import androidx.core.content.ContextCompat;
 import androidx.test.espresso.idling.CountingIdlingResource;
 import android.util.DisplayMetrics;
@@ -51,6 +46,7 @@ import android.widget.TextView;
 import com.getbouncer.cardscan.base.ssd.DetectedSSDBox;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
@@ -174,8 +170,8 @@ public abstract class ScanBaseActivity extends Activity implements Camera.Previe
     @Override
     public void onRequestPermissionsResult(
             int requestCode,
-            @NonNull String[] permissions,
-            @NonNull int[] grantResults
+            @NotNull String[] permissions,
+            @NotNull int[] grantResults
     ) {
         if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             mIsPermissionCheckDone = true;
@@ -195,7 +191,7 @@ public abstract class ScanBaseActivity extends Activity implements Camera.Previe
         }
     }
 
-    private void setCameraParameters(@NonNull Camera camera, @NonNull Camera.Parameters parameters) {
+    private void setCameraParameters(@NotNull Camera camera, @NotNull Camera.Parameters parameters) {
         try {
             camera.setParameters(parameters);
         } catch (Exception | Error e) {
@@ -341,7 +337,7 @@ public abstract class ScanBaseActivity extends Activity implements Camera.Previe
         mIsActivityActive = false;
     }
 
-    @NonNull
+    @NotNull
     private ScanStats createScanStats() {
         boolean isCameraPermissionGranted = ContextCompat.checkSelfPermission(
                 this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
@@ -398,7 +394,7 @@ public abstract class ScanBaseActivity extends Activity implements Camera.Previe
                 .addOnGlobalLayoutListener(new MyGlobalListenerClass(cardRectangleId, overlayId));
     }
 
-    public void setCameraDisplayOrientation(@NonNull Activity activity, int cameraId) {
+    public void setCameraDisplayOrientation(@NotNull Activity activity, int cameraId) {
         Camera.CameraInfo info = new Camera.CameraInfo();
         Camera.getCameraInfo(cameraId, info);
 
@@ -426,11 +422,11 @@ public abstract class ScanBaseActivity extends Activity implements Camera.Previe
         mRotation = result;
     }
 
-    static public void warmUp(@NonNull Context context) {
+    static public void warmUp(@NotNull Context context) {
         getMachineLearningThread().warmUp(context);
     }
 
-    @NonNull
+    @NotNull
     static public MachineLearningThread getMachineLearningThread() {
         if (machineLearningThread == null) {
             machineLearningThread = new MachineLearningThread();
@@ -441,7 +437,7 @@ public abstract class ScanBaseActivity extends Activity implements Camera.Previe
     }
 
     @Override
-    public void onPreviewFrame(@NonNull byte[] bytes, @NonNull Camera camera) {
+    public void onPreviewFrame(@NotNull byte[] bytes, @NotNull Camera camera) {
         if (postToMachineLearningThread && mMachineLearningSemaphore.tryAcquire()) {
             if (machineLearningFrame != null) {
                 mCamera.addCallbackBuffer(machineLearningFrame);
@@ -487,7 +483,7 @@ public abstract class ScanBaseActivity extends Activity implements Camera.Previe
     }
 
     @Override
-    public void onClick(@NonNull View view) {
+    public void onClick(@NotNull View view) {
         if (mEnterCardManuallyId == view.getId() && mEnterCardManuallyId != View.NO_ID) {
             onEnterCardManuallyPressed();
         }
@@ -528,8 +524,7 @@ public abstract class ScanBaseActivity extends Activity implements Camera.Previe
         }
     }
 
-    @VisibleForTesting
-    public void incrementNumber(@NonNull String number) {
+    public void incrementNumber(@NotNull String number) {
         Integer currentValue = numberResults.get(number);
         if (currentValue == null) {
             currentValue = 0;
@@ -538,8 +533,7 @@ public abstract class ScanBaseActivity extends Activity implements Camera.Previe
         numberResults.put(number, currentValue + 1);
     }
 
-    @VisibleForTesting
-    public void incrementExpiry(@NonNull Expiry expiry) {
+    public void incrementExpiry(@NotNull Expiry expiry) {
         Integer currentValue = expiryResults.get(expiry);
         if (currentValue == null) {
             currentValue = 0;
@@ -548,7 +542,6 @@ public abstract class ScanBaseActivity extends Activity implements Camera.Previe
         expiryResults.put(expiry, currentValue + 1);
     }
 
-    @VisibleForTesting
     @Nullable
     public String getNumberResult() {
         // Ugg there has to be a better way
@@ -570,7 +563,6 @@ public abstract class ScanBaseActivity extends Activity implements Camera.Previe
         return result;
     }
 
-    @VisibleForTesting
     public Expiry getExpiryResult() {
         Expiry result = null;
         int maxValue = 0;
@@ -590,7 +582,7 @@ public abstract class ScanBaseActivity extends Activity implements Camera.Previe
         return result;
     }
 
-    private void setValueAnimated(@NonNull TextView textView, @Nullable String value) {
+    private void setValueAnimated(@NotNull TextView textView, @Nullable String value) {
         if (textView.getVisibility() != View.VISIBLE) {
             textView.setVisibility(View.VISIBLE);
             textView.setAlpha(0.0f);
@@ -599,7 +591,7 @@ public abstract class ScanBaseActivity extends Activity implements Camera.Previe
         textView.setText(value);
     }
 
-    protected abstract void onCardScanned(@NonNull String numberResult, @Nullable String month, @Nullable String year);
+    protected abstract void onCardScanned(@NotNull String numberResult, @Nullable String month, @Nullable String year);
 
     protected void setNumberAndExpiryAnimated(long duration) {
         String numberResult = getNumberResult();
@@ -742,10 +734,10 @@ public abstract class ScanBaseActivity extends Activity implements Camera.Previe
 
     /** A basic Camera preview class */
     public class CameraPreview extends SurfaceView implements Camera.AutoFocusCallback, SurfaceHolder.Callback {
-        @NonNull private SurfaceHolder mHolder;
-        @NonNull private Camera.PreviewCallback mPreviewCallback;
+        @NotNull private SurfaceHolder mHolder;
+        @NotNull private Camera.PreviewCallback mPreviewCallback;
 
-        public CameraPreview(@NonNull Context context, @NonNull Camera.PreviewCallback previewCallback) {
+        public CameraPreview(@NotNull Context context, @NotNull Camera.PreviewCallback previewCallback) {
             super(context);
 
             mPreviewCallback = previewCallback;

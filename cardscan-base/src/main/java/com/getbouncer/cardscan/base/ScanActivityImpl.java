@@ -15,9 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import androidx.annotation.Nullable;
 
 import java.util.List;
 
@@ -117,10 +115,10 @@ public class ScanActivityImpl extends ScanBaseActivity {
     public void onPrediction(
             @Nullable final String number,
             @Nullable final Expiry expiry,
-            @NotNull final Bitmap ocrDetectionBitmap,
+            @NonNull final Bitmap ocrDetectionBitmap,
             @Nullable final List<DetectedBox> digitBoxes,
             @Nullable final DetectedBox expiryBox,
-            @NotNull final Bitmap bitmapForObjectDetection,
+            @NonNull final Bitmap bitmapForObjectDetection,
             @Nullable final Bitmap screenDetectionBitmap
     ) {
         if (mInDebugMode) {

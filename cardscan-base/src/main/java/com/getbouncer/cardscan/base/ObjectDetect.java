@@ -17,8 +17,6 @@ import com.getbouncer.cardscan.base.ssd.domain.ClassifierScores;
 import com.getbouncer.cardscan.base.ssd.domain.SizeAndCenter;
 import com.getbouncer.cardscan.base.util.ArrayExtensions;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.io.File;
 import java.util.List;
 
@@ -43,7 +41,7 @@ public class ObjectDetect {
         return ssdDetect != null;
     }
 
-    public ObjectDetect(@NotNull File modelFile) {
+    public ObjectDetect(@NonNull File modelFile) {
         this.ssdModelFile = modelFile;
     }
 

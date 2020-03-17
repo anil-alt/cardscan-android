@@ -18,8 +18,6 @@ import androidx.annotation.VisibleForTesting;
 import com.getbouncer.cardscan.base.image.YUVDecoder;
 import com.getbouncer.cardscan.base.ssd.DetectedSSDBox;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.io.File;
 import java.util.LinkedList;
 
@@ -163,7 +161,7 @@ public class MachineLearningThread implements Runnable {
         RunArguments(
                 @Nullable Bitmap bitmap,
                 @Nullable OnScanListener scanListener,
-                @NotNull Context context
+                @NonNull Context context
         ) {
             mFrameBytes = null;
             mBitmap = bitmap;

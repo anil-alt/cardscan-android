@@ -20,8 +20,6 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -124,9 +122,9 @@ class SSDDetect extends ImageClassifier {
     }
 
 
-    @NotNull
+    @NonNull
     @Override
-    protected MappedByteBuffer loadModelFile(@NotNull Context context) throws IOException {
+    protected MappedByteBuffer loadModelFile(@NonNull Context context) throws IOException {
         FileInputStream inputStream = new FileInputStream(modelFile);
         FileChannel fileChannel = inputStream.getChannel();
         long startOffset = 0;

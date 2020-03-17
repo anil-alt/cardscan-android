@@ -1,4 +1,3 @@
-
 package com.getbouncer.cardscan.base;
 
 import android.content.Context;
