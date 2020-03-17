@@ -141,14 +141,9 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:text="@string/_4242_4242_4242_4242"
-        app:autoSizeTextType="uniform"
-        app:autoSizeMinTextSize="12sp"
-        app:autoSizeMaxTextSize="100sp"
-        app:autoSizeStepGranularity="2sp"
         android:textSize="30sp"
         android:maxLines="1"
         app:layout_constraintEnd_toEndOf="@+id/cardRectangle"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/cardRectangle"
         app:layout_constraintTop_toTopOf="@+id/guideline" />
 
